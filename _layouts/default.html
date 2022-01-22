@@ -1,21 +1,25 @@
----
-layout: compress
----
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
-{% include head.html %}
+  {%- include head.html -%}
 
-<body>
+  <body>
 
-  {% include header.html %}
+    {%- include views/header.html -%}
 
-  {{ content }}
+    {%- include views/banner.html -%}
 
-  {% include contact-section.html %}
+    {%- include extensions/hashlocate.html -%}
 
-  {% include footer.html %}
+    {%- include extensions/theme-toggle.html -%}
 
-</body>
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </main>
 
+    {%- include views/footer.html -%}
+
+  </body>
 </html>

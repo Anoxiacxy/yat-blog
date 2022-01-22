@@ -1,55 +1,77 @@
 ---
-layout: default
+layout: framework
+banner:
+banner_html: post-header.html
+hidden: []
+sidebar:
+  - article-menu
 ---
-<!-- page title -->
-<section class="page-title bg-primary position-relative">
-  <div class="container">
-    <div class="row">
-      <div class="col-12 text-center">
-        <h1 class="text-white font-tertiary">Blogs</h1>
-      </div>
-    </div>
-  </div>
-  <!-- background shapes -->
-  <img src="{{ site.baseurl }}/assets/images/illustrations/page-title.png" alt="illustrations" class="bg-shape-1 w-100">
-  <img src="{{ site.baseurl }}/assets/images/illustrations/leaf-pink-round.png" alt="illustrations" class="bg-shape-2">
-  <img src="{{ site.baseurl }}/assets/images/illustrations/dots-cyan.png" alt="illustrations" class="bg-shape-3">
-  <img src="{{ site.baseurl }}/assets/images/illustrations/leaf-orange.png" alt="illustrations" class="bg-shape-4">
-  <img src="{{ site.baseurl }}/assets/images/illustrations/leaf-yellow.png" alt="illustrations" class="bg-shape-5">
-  <img src="{{ site.baseurl }}/assets/images/illustrations/dots-group-cyan.png" alt="illustrations" class="bg-shape-6">
-  <img src="{{ site.baseurl }}/assets/images/illustrations/leaf-cyan-lg.png" alt="illustrations" class="bg-shape-7">
-</section>
-<!-- /page title -->
 
-<section class="section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h3 class="font-tertiary mb-5">{{ page.title | escape }}</h3>
-        <p class="font-secondary">Published on {{ page.date | date: '%b %d, %Y' }} by <span class="text-primary">{{ page.author }}</span
-            class="text-primary"> on {% for tag in page.tags %}<span>{{ tag }} </span>{% endfor %}</p>
-        <div class="content">
-          <img src="{{page.image | relative_url }}" class="img-fluid rounded float-left mr-5 mb-4" alt="{{page.title}}">
-          {{ content }}
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="post">
+  <section>
 
-{% if site.data.settings.disqus-identifier %} {% include disqus-comments.html %} {% endif %}
+    {%- assign name = 'banner' -%}
+    {%- include functions.html func='get_value' -%}
+    {%- assign banner = return -%}
 
-<!-- blog -->
-<section class="section">
-  <div class="container">
-    <div class="row">
-      <div class="col-12 text-center">
-        <h2 class="section-title">Similar Stories</h2>
-      </div>
-      {% for post in site.posts offset:0 limit:3 %}
-      {% include post.html %}
-      {% endfor %}
+    {%- assign name = 'hidden' -%}
+    {%- include functions.html func='get_value' -%}
+    {%- assign hidden = return -%}
+
+    {%- assign result = hidden | where_exp: "item", "item == 'header'" -%}
+    {%- if banner == nil and result.size == 0 -%}
+    {%- include views/post-header.html -%}
+    {%- endif -%}
+
+    {%- include views/article.html -%}
+
+    {%- assign result = hidden | where_exp: "item", "item == 'navigator'" -%}
+    {%- if result.size == 0 -%}
+    <div class="post-nav">
+      {%- if page.previous -%}
+        <a class="previous" href="{{ page.previous.url | relative_url }}" title="{{
+          page.previous.title | escape }}">{{ page.previous.title | escape | truncatewords: 6 }}</a>
+      {%- else -%}
+      <span></span>
+      {%- endif -%}
+
+      {%- if page.next -%}
+        <a class="next" href="{{ page.next.url | relative_url }}" title="{{ page.next.title | escape }}">{{ page.next.title | escape | truncatewords: 6 }}</a>
+      {%- else -%}
+      <span></span>
+      {%- endif -%}
     </div>
-  </div>
-</section>
-<!-- /blog -->
+    {%- endif -%}
+
+    {%- assign result = hidden | where_exp: "item", "item == 'related_posts'" -%}
+    {%- if result.size == 0 -%}
+    <div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        {% assign posts = site[page.collection] | sample:4 %}
+        {%- for post in posts -%}
+        <li><a class="post-link" href="{{post.url | relative_url}}" title="{{ page.next.title | escape }}">{{ post.title | escape | truncatewords: 12 }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    {%- endif -%}
+
+    {%- assign result = hidden | where_exp: "item", "item == 'comments'" -%}
+    {%- if result.size == 0 -%}
+    <div class="post-comments">
+      {%- if page.comments != false -%}
+
+      {%- if site.disqus.shortname -%}
+      {%- include extensions/comments/disqus.html -%}
+      {%- endif -%}
+
+      {%- if site.gitment.username -%}
+      {%- include extensions/comments/gitment.html -%}
+      {%- endif -%}
+
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+
+  </section>
+</div>
