@@ -24,7 +24,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Anoxia Cxy
+title: Anoxiacxy
 email: anoxiacxy@sjtu.edu.cn
 author: Xueyang Chen
 
@@ -154,11 +154,11 @@ yat:
 #   - about.md
 
 # Page default value
-# defaults:
-#   home:
-#     heading: "Your awesome heading"
-#     subheading: "Your awesome subheading"
-#     banner: "Your image url"
+defaults:
+  home:
+    heading: "Determined goals lead to a determined self"
+    subheading: "Your awesome subheading"
+#    banner: "Your image url"
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
