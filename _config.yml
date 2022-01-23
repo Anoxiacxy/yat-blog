@@ -158,7 +158,7 @@ sitemap: true
 defaults:
   home:
     heading: "A determined goal & a determined self"
-    subheading: "Your awesome subheading"
+    subheading: ""
 #    banner: "Your image url"
 
 # Banner default settings
